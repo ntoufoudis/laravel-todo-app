@@ -17,23 +17,16 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500">
         <x-banner />
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+        <div class="min-h-screen">
+            @auth
+                @livewire('navigation-menu')
+            @endauth
 
             <!-- Page Content -->
-            <main>
+            <main class="min-h-screen w-full">
                 {{ $slot }}
             </main>
         </div>
