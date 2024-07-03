@@ -2,78 +2,57 @@
 
 namespace App\Livewire;
 
+use App\Models\Todo;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Home extends Component
 {
     #[Validate('required')]
-    public $newTodo;
-
     public $todo = '';
 
-    public function sessionDelete($todo): void
+    #[Computed]
+    public function todos()
     {
-        $todos = session()->pull('todos');
-
-        if(($key = array_search($todo, $todos)) !== false) {
-            unset($todos[$key]);
+        if (auth()->guest()) {
+            return session()->get('todos');
         }
-
-        session()->put('todos', $todos);
-
-        session()->forget($todo);
-
-        $this->redirectIntended('/', true);
-    }
-
-    public function sessionCompletedTodo($todo): void
-    {
-        $completed = session()->pull($todo);
-
-        if ($completed === 0) {
-            session()->forget($todo);
-
-            session()->put($todo, 1);
-        }
-        elseif ($completed === 1) {
-            session()->forget($todo);
-
-            session()->put($todo, 0);
+        else
+        {
+            return Todo::all();
         }
     }
 
-    public function sessionEditTodo($todo): void
+    public function sessionAddNew(): void
     {
-        $this->sessionDeleteTodo($todo);
-        $this->sessionAddTodo($this->newTodo);
-        $this->redirectIntended('/', true);
+        $this->validate();
 
-    }
-
-    private function sessionAddTodo($todo): void
-    {
-        $this->validateOnly($todo);
-
-        session()->push('todos', $todo);
-        session()->put($todo, 0);
+        session()->push('todos', $this->todo);
+        session()->put($this->todo, 0);
 
         $this->reset();
+
+        $this->redirectRoute('home', navigate: true);
     }
 
-    private function sessionDeleteTodo($todo): void
+    public function addNew(): void
     {
-        $todos = session()->pull('todos');
+        $this->validate();
 
-        if(($key = array_search($todo, $todos)) !== false) {
-            unset($todos[$key]);
-        }
+        Todo::create([
+            'text' => $this->todo,
+            'user_id' => auth()->user()->id,
+            'completed' => false,
+        ]);
 
-        session()->put('todos', $todos);
+        $this->reset();
 
-        session()->forget($todo);
+        $this->redirectRoute('home', navigate: true);
     }
 
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.home');

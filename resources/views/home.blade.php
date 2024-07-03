@@ -28,8 +28,13 @@
                     <h1>Empty</h1>
                 @else
                     @foreach($todos as $todo)
-                        <livewire:home :todo="$todo" wire:key={{$todo}}/>
+                        @guest
+                            <livewire:session-todo :todo="$todo" wire:key={{$todo}}/>
+                        @else
+                            <livewire:database-todo :todo="$todo" wire:key={{$todo->id}}/>
+                        @endguest
                     @endforeach
+                    {{ $todos->links() }}
                 @endif
             </div>
         </div>
