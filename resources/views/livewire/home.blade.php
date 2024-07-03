@@ -13,8 +13,13 @@
                 </button>
             </div>
             <div class="flex mt-4 space-x-6">
-                <input class="rounded w-64" placeholder="Search...">
-                <select class="rounded w-30">
+                <input
+                    wire:model.live.debounce.300ms="search"
+                    type="text"
+                    placeholder="Search..."
+                    class="rounded w-64"
+                >
+                <select wire:model="filter" class="rounded w-30">
                     <option value="all">All</option>
                     <option value="active">Active</option>
                     <option value="completed">Completed</option>
@@ -50,18 +55,18 @@
                         </form>
                     </div>
                 @endguest
-
-                @if($this->todos === null)
-                    <h1>Empty</h1>
-                @else
-                    @foreach($this->todos as $todo)
-                        @guest
-                            <livewire:session-todo :todo="$todo" wire:key={{$todo}}/>
-                        @else
+{{--@dd($todos)--}}
+{{--                @if($todos === null)--}}
+{{--                    <h1>Empty</h1>--}}
+{{--                @else--}}
+                    @foreach($todos as $todo)
+{{--                        @guest--}}
+{{--                            <livewire:session-todo :todo="$todo" wire:key={{$todo}}/>--}}
+{{--                        @else--}}
                             <livewire:database-todo :todo="$todo" wire:key={{$todo}}/>
-                        @endguest
+{{--                        @endguest--}}
                     @endforeach
-                @endif
+{{--                @endif--}}
             </div>
         </div>
     </div>
