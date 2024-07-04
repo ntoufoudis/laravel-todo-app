@@ -14,15 +14,11 @@ class Todo extends Model
     protected $fillable = [
         'text',
         'user_id',
+        'completed'
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
-//    public function scopeSearch($query, $search = ''): void
-//    {
-//        $query->where('text', 'like', "%{$search}%");
-//    }
 }

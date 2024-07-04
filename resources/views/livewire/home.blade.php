@@ -42,7 +42,7 @@
             @guest
                 <span>Please Login To Use The App</span>
             @else
-                @foreach($todos as $todo)
+                @foreach($this->todos as $todo)
                     <livewire:database-todo :todo="$todo" wire:key={{$todo}}/>
                 @endforeach
             @endguest

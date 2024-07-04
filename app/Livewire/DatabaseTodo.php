@@ -9,7 +9,7 @@ use Livewire\Component;
 class DatabaseTodo extends Component
 {
     #[Validate('required')]
-    public $newTodo;
+    public $newTodo = '';
 
     public $todo = '';
 
@@ -24,11 +24,11 @@ class DatabaseTodo extends Component
     {
         $todo = Todo::find($todo);
 
-        if ($todo->completed) {
-            $todo->completed = false;
+        if ($todo->completed === 1) {
+            $todo->completed = 0;
         }
         else {
-            $todo->completed = true;
+            $todo->completed = 1;
         }
 
         $todo->save();
@@ -39,9 +39,13 @@ class DatabaseTodo extends Component
 
     public function editTodo($todo): void
     {
+        $this->validate();
+
         $todo = Todo::find($todo);
         $todo->text = $this->newTodo;
+
         $todo->save();
+
         $this->redirectIntended('/', true);
     }
 

@@ -46,7 +46,7 @@
         </div>
     </div>
     <div x-show=isEditing class="flex flex-col">
-        @php $this->newTodo = $todo->text @endphp
+{{--        @php $this->newTodo = $todo->text @endphp--}}
         <form class="flex" wire:submit="editTodo('{{$todo->id}}')">
             <input
                 shadowless

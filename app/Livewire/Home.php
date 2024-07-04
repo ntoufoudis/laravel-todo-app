@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Todo;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -12,7 +14,10 @@ class Home extends Component
     #[Validate('required')]
     public $todo = '';
 
+    #[Url]
     public $search = '';
+
+    #[Url]
     public $filter = 'all';
 
     public function addNew(): void
@@ -30,8 +35,8 @@ class Home extends Component
         $this->redirectRoute('home', navigate: true);
     }
 
-    #[Layout('layouts.app')]
-    public function render()
+    #[Computed]
+    public function todos()
     {
         if(auth()->user()){
             if ($this->filter === 'all') {
@@ -59,9 +64,13 @@ class Home extends Component
         else {
             $todos = [];
         }
+        return $todos;
 
-        return view('livewire.home', [
-            'todos' => $todos,
-        ]);
+    }
+
+    #[Layout('layouts.app')]
+    public function render()
+    {
+        return view('livewire.home');
     }
 }
