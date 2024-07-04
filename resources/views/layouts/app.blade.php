@@ -21,13 +21,15 @@
         <x-banner />
 
         <div class="min-h-screen">
-            @auth
-                @livewire('navigation-menu')
-            @endauth
 
             <!-- Page Content -->
             <main class="min-h-screen w-full">
+                <div class="flex w-full min-h-screen items-center justify-center">
+                    <div class="w-[500px] bg-white/30 rounded-xl p-5">
+
                 {{ $slot }}
+                    </div>
+                </div>
             </main>
         </div>
 
